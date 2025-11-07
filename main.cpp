@@ -10,9 +10,11 @@ class Pen{
 public:
   float r;
   float omega;
+  float phi;
 
   Pen(){}
-  Pen(float r, float o): r(r), omega(o){}
+  Pen(float r, float o): r(r), omega(o), phi(0){}
+  Pen(float r, float o, float p): r(r), omega(o), phi(p){}
 };
 
 int main()
@@ -28,7 +30,7 @@ int main()
   Pen pens[arrlen];
 
   for(int i = 0; i < arrlen; ++i){
-    pens[i] = Pen((std::rand()%r), (std::rand()%r-r/2));
+    pens[i] = Pen((std::rand()%r), (std::rand()%r-r/2), (std::rand()%360*(pi*2.f/360.f)));
   }
 
   while(window.isOpen()){
@@ -47,7 +49,8 @@ int main()
       sf::Vector2f pos = sf::Vector2f(window.getSize().x/2.f, window.getSize().y/2.f);
       //  Move by the arrow thingies.
       for(int i = 0; i<arrlen; ++i){
-        double angle = pi * 2.f / max_t * t * pens[i].omega  +  pi/2.f;
+        double angle = pens[i].phi 
+                    + pi * 2.f / max_t * t * pens[i].omega  +  pi/2.f;
         sf::Vector2f offs = sf::Vector2f(std::cos(angle)*pens[i].r, std::sin(angle)*pens[i].r);
         pos += offs;
       }
